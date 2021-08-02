@@ -19,7 +19,7 @@ class ApplicationMain
 
 		#if (js && html5)
 		#if (munit || utest)
-		lime.system.System.embed("Fight", null, 640, 480);
+		lime.system.System.embed("Fight", null, 1920, 1080);
 		#end
 		#else
 		create(null);
@@ -51,14 +51,14 @@ class ApplicationMain
 			element: null,
 			frameRate: 60,
 			#if !web fullscreen: false, #end
-			height: 480,
+			height: 1080,
 			hidden: #if munit true #else false #end,
 			maximized: false,
 			minimized: false,
 			parameters: {},
 			resizable: false,
 			title: "Fight",
-			width: 640,
+			width: 1920,
 			x: null,
 			y: null,
 		};
