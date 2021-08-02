@@ -2,13 +2,14 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.util.FlxColor;
 
 class MapStage extends FlxSprite
 {
-	public function new()
+	public function new(x = 0, y = 400, color = FlxColor.GRAY)
 	{
 		super();
-		makeGraphic(100, 100, 0xFFFFFFFF);
+		makeGraphic(x, y, color);
 	}
 
 	override public function update(elapsed:Float):Void
