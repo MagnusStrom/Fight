@@ -56,9 +56,7 @@ class HXCPP_CLASS_ATTRIBUTES PlayState_obj : public  ::flixel::FlxState_obj
 		 ::MapStage stage;
 		 ::Character p1;
 		 ::Character p2;
-		 ::flixel::FlxSprite p1hitbox;
-		 ::flixel::FlxSprite p2hitbox;
-		 ::flixel::FlxSprite testCharLazer;
+		 ::flixel::group::FlxTypedGroup p1Objects;
 		void create();
 
 		void update(Float elapsed);

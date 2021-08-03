@@ -8,12 +8,12 @@ import flixel.util.FlxTimer;
 
 class Character extends FlxSprite
 {
-	public var touchingObject = false;
+	public var stunned = false;
 
 	public var jumping = false;
 
 	public var facingleft:Bool = true;
-	public var meleeleft:Bool = true;
+	public var attackleft:Bool = true;
 	public var canplay = false;
 	public var hitting = false;
 	// fuck my life
@@ -36,10 +36,14 @@ class Character extends FlxSprite
 
 	public var char:String = "test";
 
-	public function new(playable = true, name = "test", path = "assets/characters/test.png", w = 60, h = 140, ox = -10, oy = -50, fwidth = 32, fheight = 32)
+	private var pnum = 1;
+
+	public function new(playernum = 1, playable = true, name = "test", path = "assets/characters/test.png", w = 60, h = 140, ox = -10, oy = -50, fwidth = 32,
+			fheight = 32)
 	{
 		super();
 
+		pnum = playernum;
 		char = name;
 		canplay = playable;
 		loadGraphic(path, true, fwidth, fheight);
@@ -77,165 +81,190 @@ class Character extends FlxSprite
 
 	override public function update(elapsed:Float):Void
 	{
-		if (canplay)
+		FlxG.watch.addQuick("PLAYER" + pnum + "STUNNED", stunned);
+		// FlxG.watch.addQuick("PLAYER" + pnum + "
+		if (stunned)
 		{
-			if (FlxG.keys.pressed.LEFT || FlxG.keys.pressed.A)
+			animation.play("hit");
+		}
+		else
+		{
+			if (canplay)
 			{
-				if (!canhit)
+				if (FlxG.keys.pressed.LEFT || FlxG.keys.pressed.A)
 				{
-					if (!meleeleft)
+					if (!canhit)
 					{
-						animation.play("atkright", true);
+						if (!attackleft)
+						{
+							animation.play("atkright", true);
+						}
+						else
+						{
+							animation.play("atkleft", true);
+						}
 					}
 					else
 					{
-						animation.play("atkleft", true);
+						animation.play("moveleft");
 					}
-				}
-				else
-				{
-					animation.play("moveleft");
-				}
 
-				facingleft = true;
-				velocity.x = -300;
-			}
-			if (FlxG.keys.pressed.RIGHT || FlxG.keys.pressed.D)
-			{
-				if (!canhit)
+					facingleft = true;
+					velocity.x = -300;
+				}
+				if (FlxG.keys.pressed.RIGHT || FlxG.keys.pressed.D)
 				{
-					if (!meleeleft)
+					if (!canhit)
 					{
-						animation.play("atkright", true);
+						if (!attackleft)
+						{
+							animation.play("atkright", true);
+						}
+						else
+						{
+							animation.play("atkleft", true);
+						}
 					}
 					else
 					{
-						animation.play("atkleft", true);
+						animation.play("moveright");
 					}
+					facingleft = false;
+					velocity.x = 300;
 				}
-				else
+				if (FlxG.keys.pressed.SPACE && !jumping)
 				{
-					animation.play("moveright");
+					velocity.y = -500;
+					jumping = true;
 				}
-				facingleft = false;
-				velocity.x = 300;
-			}
-			if (FlxG.keys.pressed.SPACE && !jumping)
-			{
-				velocity.y = -500;
-				jumping = true;
-			}
 
-			// HIT CODE
-			if (FlxG.keys.justPressed.P || FlxG.keys.justPressed.Z)
-			{
-				if (canhit)
+				// This code is actually fucking monkey.
+				if (canhit && canspecial)
 				{
-					hitboxInUse = true;
-					hitting = true;
-					if (!facingleft)
+					if (FlxG.keys.justPressed.P || FlxG.keys.justPressed.Z)
 					{
-						meleeleft = false;
-						// width = 120;
-						// offset.set(offsetx, offsety);
-						animation.play("atkright", true);
-						hitboxX = (!facingleft ? (x + 100) : (x - 70));
-						hitboxY = y + 20;
+						if (canhit)
+						{
+							hitboxInUse = true;
+							hitting = true;
+							if (!facingleft)
+							{
+								attackleft = false;
+								// width = 120;
+								// offset.set(offsetx, offsety);
+								animation.play("atkright", true);
+								hitboxX = (!facingleft ? (x + 100) : (x - 70));
+								hitboxY = y + 20;
+							}
+							else
+							{
+								attackleft = true;
+								hitboxX = (!facingleft ? (x + 100) : (x - 70));
+								hitboxY = y + 20;
+								animation.play("atkleft", true);
+							}
+							// reset
+							canhit = false;
+							var timer = new FlxTimer().start(1, function(timer)
+							{
+								canhit = true;
+							});
+						}
 					}
 					else
 					{
-						meleeleft = true;
-						hitboxX = (!facingleft ? (x + 100) : (x - 70));
-						hitboxY = y + 20;
-						animation.play("atkleft", true);
-					}
-					// reset
-					canhit = false;
-					var timer = new FlxTimer().start(1, function(timer)
-					{
-						canhit = true;
-					});
-				}
-			}
-			else
-			{
-				hitting = false;
-				hitboxInUse = false;
-			}
-
-			// SPECIAL CODE
-			if (FlxG.keys.justPressed.O || FlxG.keys.justPressed.X)
-			{
-				if (canspecial)
-				{
-					special = true;
-					hitboxInUse = true;
-					if (!facingleft)
-					{
-						animation.play("spcright");
-					}
-					else
-					{
-						animation.play("spcleft");
-					}
-
-					// reset
-					canspecial = false;
-					var timer = new FlxTimer().start(5, function(timer)
-					{
+						hitting = false;
 						hitboxInUse = false;
-						canspecial = true;
-						usingspecial = false;
-					});
+					}
+
+					// SPECIAL CODE
+					if (FlxG.keys.justPressed.O || FlxG.keys.justPressed.X)
+					{
+						if (canspecial)
+						{
+							special = true;
+							hitboxInUse = true;
+							if (!facingleft)
+							{
+								animation.play("spcright");
+								attackleft = false;
+							}
+							else
+							{
+								animation.play("spcleft");
+								attackleft = true;
+							}
+
+							// reset
+							canspecial = false;
+							var timer = new FlxTimer().start(3, function(timer)
+							{
+								hitboxInUse = false;
+								canspecial = true;
+								usingspecial = false;
+							});
+						}
+					}
+					else
+					{
+						special = false;
+					}
+				}
+				else
+				{
+					hitting = false;
+					special = false;
+				}
+
+				if (jumping)
+				{
+					if (!canhit)
+					{
+						if (!attackleft)
+						{
+							animation.play("atkright", true);
+						}
+						else
+						{
+							animation.play("atkleft", true);
+						}
+					}
+					else
+					{
+						animation.play('jump', false);
+					}
+				}
+				if (!FlxG.keys.pressed.P && !FlxG.keys.pressed.Z && !FlxG.keys.pressed.LEFT && !FlxG.keys.pressed.RIGHT && !FlxG.keys.pressed.SPACE
+					&& !FlxG.keys.pressed.A && !FlxG.keys.pressed.D && !FlxG.keys.pressed.O && !FlxG.keys.pressed.X)
+				{
+					if (!canhit)
+					{
+						if (!attackleft)
+						{
+							animation.play("atkright", true);
+						}
+						else
+						{
+							animation.play("atkleft", true);
+						}
+					}
+					else
+					{
+						animation.play('idle');
+					}
 				}
 			}
 			else
 			{
-				special = false;
-			}
-
-			if (jumping)
-			{
-				if (!canhit)
-				{
-					if (!meleeleft)
-					{
-						animation.play("atkright", true);
-					}
-					else
-					{
-						animation.play("atkleft", true);
-					}
-				}
-				else
-				{
-					animation.play('jump', false);
-				}
-			}
-			if (!FlxG.keys.pressed.P && !FlxG.keys.pressed.Z && !FlxG.keys.pressed.LEFT && !FlxG.keys.pressed.RIGHT && !FlxG.keys.pressed.SPACE
-				&& !FlxG.keys.pressed.A && !FlxG.keys.pressed.D && !FlxG.keys.pressed.O && !FlxG.keys.pressed.X)
-			{
-				if (!canhit)
-				{
-					if (!meleeleft)
-					{
-						animation.play("atkright", true);
-					}
-					else
-					{
-						animation.play("atkleft", true);
-					}
-				}
-				else
-				{
-					animation.play('idle');
-				}
+				// punching bag, for waiting ig
+				animation.play('idle');
 			}
 		}
 		if (y > 900)
 		{
 			respawn();
 		}
+
 		/*	if (acceleration.x > 0)
 			{
 				acceleration.x -= 1;

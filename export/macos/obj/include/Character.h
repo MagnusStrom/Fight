@@ -27,13 +27,13 @@ class HXCPP_CLASS_ATTRIBUTES Character_obj : public  ::flixel::FlxSprite_obj
 	public:
 		enum { _hx_ClassId = 0x55af02e5 };
 
-		void __construct(::hx::Null< bool >  __o_playable,::String __o_name,::String __o_path,::hx::Null< int >  __o_w,::hx::Null< int >  __o_h,::hx::Null< int >  __o_ox,::hx::Null< int >  __o_oy,::hx::Null< int >  __o_fwidth,::hx::Null< int >  __o_fheight);
+		void __construct(::hx::Null< int >  __o_playernum,::hx::Null< bool >  __o_playable,::String __o_name,::String __o_path,::hx::Null< int >  __o_w,::hx::Null< int >  __o_h,::hx::Null< int >  __o_ox,::hx::Null< int >  __o_oy,::hx::Null< int >  __o_fwidth,::hx::Null< int >  __o_fheight);
 		inline void *operator new(size_t inSize, bool inContainer=true,const char *inName="Character")
 			{ return ::hx::Object::operator new(inSize,inContainer,inName); }
 		inline void *operator new(size_t inSize, int extra)
 			{ return ::hx::Object::operator new(inSize+extra,true,"Character"); }
-		static ::hx::ObjectPtr< Character_obj > __new(::hx::Null< bool >  __o_playable,::String __o_name,::String __o_path,::hx::Null< int >  __o_w,::hx::Null< int >  __o_h,::hx::Null< int >  __o_ox,::hx::Null< int >  __o_oy,::hx::Null< int >  __o_fwidth,::hx::Null< int >  __o_fheight);
-		static ::hx::ObjectPtr< Character_obj > __alloc(::hx::Ctx *_hx_ctx,::hx::Null< bool >  __o_playable,::String __o_name,::String __o_path,::hx::Null< int >  __o_w,::hx::Null< int >  __o_h,::hx::Null< int >  __o_ox,::hx::Null< int >  __o_oy,::hx::Null< int >  __o_fwidth,::hx::Null< int >  __o_fheight);
+		static ::hx::ObjectPtr< Character_obj > __new(::hx::Null< int >  __o_playernum,::hx::Null< bool >  __o_playable,::String __o_name,::String __o_path,::hx::Null< int >  __o_w,::hx::Null< int >  __o_h,::hx::Null< int >  __o_ox,::hx::Null< int >  __o_oy,::hx::Null< int >  __o_fwidth,::hx::Null< int >  __o_fheight);
+		static ::hx::ObjectPtr< Character_obj > __alloc(::hx::Ctx *_hx_ctx,::hx::Null< int >  __o_playernum,::hx::Null< bool >  __o_playable,::String __o_name,::String __o_path,::hx::Null< int >  __o_w,::hx::Null< int >  __o_h,::hx::Null< int >  __o_ox,::hx::Null< int >  __o_oy,::hx::Null< int >  __o_fwidth,::hx::Null< int >  __o_fheight);
 		static void * _hx_vtable;
 		static Dynamic __CreateEmpty();
 		static Dynamic __Create(::hx::DynamicArray inArgs);
@@ -49,10 +49,10 @@ class HXCPP_CLASS_ATTRIBUTES Character_obj : public  ::flixel::FlxSprite_obj
 		bool _hx_isInstanceOf(int inClassId);
 		::String __ToString() const { return HX_("Character",89,bb,a4,e3); }
 
-		bool touchingObject;
+		bool stunned;
 		bool jumping;
 		bool facingleft;
-		bool meleeleft;
+		bool attackleft;
 		bool canplay;
 		bool hitting;
 		bool special;
@@ -68,6 +68,7 @@ class HXCPP_CLASS_ATTRIBUTES Character_obj : public  ::flixel::FlxSprite_obj
 		int hitboxVelocityX;
 		int hitboxVelocityY;
 		::String _hx_char;
+		int pnum;
 		void respawn();
 		::Dynamic respawn_dyn();
 

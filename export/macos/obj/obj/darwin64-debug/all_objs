@@ -402,6 +402,7 @@
 "obj/darwin64-debug/46254754_Texture.o"
 "obj/darwin64-debug/64dad501_CanvasDisplayObjectContainer.o"
 "obj/darwin64-debug/2ef37290_ArrayBufferIO.o"
+"obj/darwin64-debug/72a965ea_Hitbox.o"
 "obj/darwin64-debug/b972d900_OES_compressed_paletted_texture.o"
 "obj/darwin64-debug/8ec04c42_Rectangle.o"
 "obj/darwin64-debug/8fbef3c9_PixelSnapping_Impl_.o"
