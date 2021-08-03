@@ -53,6 +53,9 @@ class HXCPP_CLASS_ATTRIBUTES FileSystem_obj : public ::hx::Object
 		static bool exists(::String path);
 		static ::Dynamic exists_dyn();
 
+		static bool isDirectory(::String path);
+		static ::Dynamic isDirectory_dyn();
+
 		static void createDirectory(::String path);
 		static ::Dynamic createDirectory_dyn();
 

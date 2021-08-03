@@ -10,6 +10,10 @@
 --macro keep('IntIterator')
 -cp /usr/local/lib/haxe/lib/hscript/2,4,0
 -D hscript=2.4.0
+-cp /usr/local/lib/haxe/lib/flixel-addons/git
+-D flixel-addons=2.10.0
+-cp /usr/local/lib/haxe/lib/flixel-ui/2,3,3
+-D flixel-ui=2.3.3
 -cp source
 -D lime-openal
 -D native

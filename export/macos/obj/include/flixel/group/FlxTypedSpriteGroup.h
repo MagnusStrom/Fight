@@ -67,18 +67,6 @@ class HXCPP_CLASS_ATTRIBUTES FlxTypedSpriteGroup_obj : public  ::flixel::FlxSpri
 		void transformChildren_flash_display_BlendMode( ::Dynamic Function, ::Dynamic Value);
 		::Dynamic transformChildren_flash_display_BlendMode_dyn();
 
-		void transformChildren_Int( ::Dynamic Function,int Value);
-		::Dynamic transformChildren_Int_dyn();
-
-		void transformChildren_Float( ::Dynamic Function,Float Value);
-		::Dynamic transformChildren_Float_dyn();
-
-		void transformChildren_Bool( ::Dynamic Function,bool Value);
-		::Dynamic transformChildren_Bool_dyn();
-
-		void transformChildren_Array_flixel_FlxCamera( ::Dynamic Function,::Array< ::Dynamic> Value);
-		::Dynamic transformChildren_Array_flixel_FlxCamera_dyn();
-
 		void transformChildren_flixel_FlxCamera( ::Dynamic Function, ::flixel::FlxCamera Value);
 		::Dynamic transformChildren_flixel_FlxCamera_dyn();
 
@@ -88,13 +76,25 @@ class HXCPP_CLASS_ATTRIBUTES FlxTypedSpriteGroup_obj : public  ::flixel::FlxSpri
 		void transformChildren_flixel_math_FlxPoint( ::Dynamic Function, ::flixel::math::FlxPoint Value);
 		::Dynamic transformChildren_flixel_math_FlxPoint_dyn();
 
+		void transformChildren_Int( ::Dynamic Function,int Value);
+		::Dynamic transformChildren_Int_dyn();
+
+		void transformChildren_Array_flixel_FlxCamera( ::Dynamic Function,::Array< ::Dynamic> Value);
+		::Dynamic transformChildren_Array_flixel_FlxCamera_dyn();
+
+		void transformChildren_Float( ::Dynamic Function,Float Value);
+		::Dynamic transformChildren_Float_dyn();
+
+		void transformChildren_Bool( ::Dynamic Function,bool Value);
+		::Dynamic transformChildren_Bool_dyn();
+
 		 ::flixel::group::FlxTypedGroup group;
 		bool directAlpha;
 		bool _skipTransformChildren;
 		::Array< ::Dynamic> _sprites;
 		void initVars();
 
-		void destroy();
+		virtual void destroy();
 
 		 ::flixel::FlxSprite clone();
 
@@ -104,13 +104,13 @@ class HXCPP_CLASS_ATTRIBUTES FlxTypedSpriteGroup_obj : public  ::flixel::FlxSpri
 
 		bool pixelsOverlapPoint( ::flixel::math::FlxPoint point,::hx::Null< int >  Mask, ::flixel::FlxCamera Camera);
 
-		void update(Float elapsed);
+		virtual void update(Float elapsed);
 
 		void draw();
 
 		::Array< ::Dynamic> replaceColor(int _tmp_Color,int _tmp_NewColor,::hx::Null< bool >  FetchPositions);
 
-		 ::Dynamic add( ::Dynamic Sprite);
+		virtual  ::Dynamic add( ::Dynamic Sprite);
 		::Dynamic add_dyn();
 
 		 ::Dynamic insert(int Position, ::Dynamic Sprite);
@@ -122,7 +122,7 @@ class HXCPP_CLASS_ATTRIBUTES FlxTypedSpriteGroup_obj : public  ::flixel::FlxSpri
 		 ::Dynamic recycle(::hx::Class ObjectClass, ::Dynamic ObjectFactory,::hx::Null< bool >  Force,::hx::Null< bool >  Revive);
 		::Dynamic recycle_dyn();
 
-		 ::Dynamic remove( ::Dynamic Sprite,::hx::Null< bool >  Splice);
+		virtual  ::Dynamic remove( ::Dynamic Sprite,::hx::Null< bool >  Splice);
 		::Dynamic remove_dyn();
 
 		 ::Dynamic replace( ::Dynamic OldObject, ::Dynamic NewObject);
@@ -190,7 +190,7 @@ class HXCPP_CLASS_ATTRIBUTES FlxTypedSpriteGroup_obj : public  ::flixel::FlxSpri
 
 		bool set_exists(bool Value);
 
-		bool set_visible(bool Value);
+		virtual bool set_visible(bool Value);
 
 		bool set_active(bool Value);
 
@@ -216,7 +216,7 @@ class HXCPP_CLASS_ATTRIBUTES FlxTypedSpriteGroup_obj : public  ::flixel::FlxSpri
 
 		bool set_solid(bool Value);
 
-		int set_color(int _tmp_Value);
+		virtual int set_color(int _tmp_Value);
 
 		 ::Dynamic set_blend( ::Dynamic Value);
 
@@ -224,13 +224,13 @@ class HXCPP_CLASS_ATTRIBUTES FlxTypedSpriteGroup_obj : public  ::flixel::FlxSpri
 
 		bool set_pixelPerfectRender(bool Value);
 
-		Float set_width(Float Value);
+		virtual Float set_width(Float Value);
 
-		Float get_width();
+		virtual Float get_width();
 
-		Float set_height(Float Value);
+		virtual Float set_height(Float Value);
 
-		Float get_height();
+		virtual Float get_height();
 
 		int get_length();
 		::Dynamic get_length_dyn();

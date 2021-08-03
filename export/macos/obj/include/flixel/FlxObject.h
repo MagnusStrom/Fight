@@ -198,7 +198,7 @@ class HXCPP_CLASS_ATTRIBUTES FlxObject_obj : public  ::flixel::FlxBasic_obj
 		virtual void setPosition(::hx::Null< Float >  X,::hx::Null< Float >  Y);
 		::Dynamic setPosition_dyn();
 
-		void setSize(Float Width,Float Height);
+		virtual void setSize(Float Width,Float Height);
 		::Dynamic setSize_dyn();
 
 		virtual void drawDebug();

@@ -111,6 +111,9 @@ class HXCPP_CLASS_ATTRIBUTES Xml_obj : public ::hx::Object
 		bool removeChild( ::Xml x);
 		::Dynamic removeChild_dyn();
 
+		void insertChild( ::Xml x,int pos);
+		::Dynamic insertChild_dyn();
+
 		virtual ::String toString();
 		::Dynamic toString_dyn();
 

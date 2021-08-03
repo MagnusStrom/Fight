@@ -66,10 +66,10 @@ class HXCPP_CLASS_ATTRIBUTES FlxState_obj : public  ::flixel::group::FlxTypedGro
 
 		virtual void draw();
 
-		void openSubState( ::flixel::FlxSubState SubState);
+		virtual void openSubState( ::flixel::FlxSubState SubState);
 		::Dynamic openSubState_dyn();
 
-		void closeSubState();
+		virtual void closeSubState();
 		::Dynamic closeSubState_dyn();
 
 		void resetSubState();
@@ -77,7 +77,7 @@ class HXCPP_CLASS_ATTRIBUTES FlxState_obj : public  ::flixel::group::FlxTypedGro
 
 		virtual void destroy();
 
-		bool switchTo( ::flixel::FlxState nextState);
+		virtual bool switchTo( ::flixel::FlxState nextState);
 		::Dynamic switchTo_dyn();
 
 		void onFocusLost();

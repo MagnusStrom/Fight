@@ -63,7 +63,7 @@ class HXCPP_CLASS_ATTRIBUTES FlxSubState_obj : public  ::flixel::FlxState_obj
 		bool _created;
 		void draw();
 
-		void destroy();
+		virtual void destroy();
 
 		void close();
 		::Dynamic close_dyn();

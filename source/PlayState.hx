@@ -5,6 +5,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import haxe.display.Display.Package;
@@ -20,13 +21,14 @@ class PlayState extends FlxState
 
 	override public function create()
 	{
+		FlxG.fixedTimestep = false;
 		p1Objects = new FlxTypedGroup<Hitbox>(0);
 		add(p1Objects);
 		var bg = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.fromRGB(157, 237, 232));
 		add(bg);
-		p1 = new Character(1);
+		p1 = new Character(1, true, "test", "assets/characters/test.png", 60, 140, -29, -50, 32, 32);
 		add(p1);
-		p2 = new Character(2, false);
+		p2 = new Character(2, false, "stickman", "assets/characters/stickman.png");
 		add(p2);
 		stage = new MapStage(500, 400, 1000, 400);
 		add(stage);
@@ -55,11 +57,31 @@ class PlayState extends FlxState
 			switch (p1.char)
 			{
 				case "test":
-					var testCharLazer:Hitbox = new Hitbox(p1.x, p1.y + 20, 50, 50, FlxColor.BLUE, 700,
+					var testCharLazer:Hitbox = new Hitbox(p1.x, p1.y + 60, 50, 50, FlxColor.BLUE, 700,
 						1000); // testCharLazer.x = (p1.facingleft ? (p1.x + 100) : (p1.x - 70));
 					testCharLazer.velocity.x = (p1.attackleft ? -1000 : 1000);
 					p1Objects.add(testCharLazer);
-					// trace("ADDED");
+				// trace("ADDED");
+				case "stickman":
+					var explosion:Hitbox = new Hitbox(p1.x + 26, p1.y + 70, 10, 10, FlxColor.BLUE, 2500,
+						2500); // testCharLazer.x = (p1.facingleft ? (p1.x + 100) : (p1.x - 70));
+					explosion.alpha = 0.5;
+					p1Objects.add(explosion);
+					FlxTween.tween(explosion, {"scale.x": 20, "scale.y": 20}, 0.5, {
+						onUpdate: function(tween)
+						{
+							//	FlxG.watch.addQuick("mid", (p1.width / 2));
+							explosion.updateHitbox();
+							explosion.x = ((p1.width / 2) + p1.x) - (explosion.width / 2);
+							explosion.y = ((p1.height / 2) + p1.y) - (explosion.height / 2);
+							// trace("X: " + explosion.x);
+						},
+						onComplete: function(tween)
+						{
+							p1Objects.remove(explosion);
+						},
+						type: ONESHOT
+					});
 			}
 		}
 
@@ -73,6 +95,14 @@ class PlayState extends FlxState
 					var timer = new FlxTimer().start(0.1, function(timer)
 					{
 						p1Objects.remove(p1hitbox);
+					});
+				case "stickman":
+					var p1bullet:Hitbox = new Hitbox(p1.x + (50 * (p1.attackleft ? -1 : 1.3)), p1.y + 50, 10, 10, FlxColor.RED, 700, 500);
+					p1Objects.add(p1bullet);
+					p1bullet.velocity.x = (500 * (p1.attackleft ? -1 : 1.3));
+					var timer = new FlxTimer().start(5, function(timer)
+					{
+						p1Objects.remove(p1bullet);
 					});
 			}
 		}
@@ -92,6 +122,7 @@ class PlayState extends FlxState
 			p2.velocity.y = FlxG.random.int(-hitbox.knockbacky, -hitbox.knockbacky);
 			// trace(hitbox.knockbackx);
 			// trace(hitbox.knockbacky);
+			p1Objects.remove(hitbox);
 			if (!p2.stunned)
 			{
 				p2.stunned = true;

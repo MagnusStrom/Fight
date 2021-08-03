@@ -10,6 +10,14 @@
 --macro keep('IntIterator')
 -cp /usr/local/lib/haxe/lib/hscript/2,4,0
 -D hscript=2.4.0
+-cp /usr/local/lib/haxe/lib/flixel-addons/git
+-D flixel-addons=2.10.0
+-cp /usr/local/lib/haxe/lib/flixel-ui/2,3,3
+-D flixel-ui=2.3.3
+-cp /usr/local/lib/haxe/lib/colyseus/0,14,9/src
+-D colyseus=0.14.9
+-cp /usr/local/lib/haxe/lib/colyseus-websocket/1,0,7/src
+-D colyseus-websocket=1.0.7
 -cp source
 -D MAC_USE_CURRENT_SDK=1
 -D tools=7.9.0

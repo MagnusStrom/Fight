@@ -81,29 +81,29 @@ class HXCPP_CLASS_ATTRIBUTES FlxTypedButton_obj : public  ::flixel::FlxSprite_ob
 		 ::flixel::input::FlxInput input;
 		::Dynamic currentInput;
 		int lastStatus;
-		void graphicLoaded();
+		virtual void graphicLoaded();
 
-		void loadDefaultGraphic();
+		virtual void loadDefaultGraphic();
 		::Dynamic loadDefaultGraphic_dyn();
 
 		void setupAnimation(::String animationName,int frameIndex);
 		::Dynamic setupAnimation_dyn();
 
-		void destroy();
+		virtual void destroy();
 
-		void update(Float elapsed);
+		virtual void update(Float elapsed);
 
-		void updateStatusAnimation();
+		virtual void updateStatusAnimation();
 		::Dynamic updateStatusAnimation_dyn();
 
-		void draw();
+		virtual void draw();
 
 		void drawDebug();
 
 		bool stampOnAtlas( ::flixel::graphics::atlas::FlxAtlas atlas);
 		::Dynamic stampOnAtlas_dyn();
 
-		void updateButton();
+		virtual void updateButton();
 		::Dynamic updateButton_dyn();
 
 		bool checkMouseOverlap();
@@ -127,16 +127,16 @@ class HXCPP_CLASS_ATTRIBUTES FlxTypedButton_obj : public  ::flixel::FlxSprite_ob
 		void onUpEventListener( ::openfl::events::MouseEvent _);
 		::Dynamic onUpEventListener_dyn();
 
-		void onUpHandler();
+		virtual void onUpHandler();
 		::Dynamic onUpHandler_dyn();
 
-		void onDownHandler();
+		virtual void onDownHandler();
 		::Dynamic onDownHandler_dyn();
 
-		void onOverHandler();
+		virtual void onOverHandler();
 		::Dynamic onOverHandler_dyn();
 
-		void onOutHandler();
+		virtual void onOutHandler();
 		::Dynamic onOutHandler_dyn();
 
 		 ::Dynamic set_label( ::Dynamic Value);
@@ -147,9 +147,9 @@ class HXCPP_CLASS_ATTRIBUTES FlxTypedButton_obj : public  ::flixel::FlxSprite_ob
 
 		Float set_alpha(Float Value);
 
-		Float set_x(Float Value);
+		virtual Float set_x(Float Value);
 
-		Float set_y(Float Value);
+		virtual Float set_y(Float Value);
 
 		bool get_justReleased();
 		::Dynamic get_justReleased_dyn();

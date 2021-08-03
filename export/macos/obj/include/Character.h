@@ -69,6 +69,9 @@ class HXCPP_CLASS_ATTRIBUTES Character_obj : public  ::flixel::FlxSprite_obj
 		int hitboxVelocityY;
 		::String _hx_char;
 		int pnum;
+		::Array< ::String > charlist;
+		::Array< Float > atkcooldown;
+		::Array< Float > specialcooldown;
 		void respawn();
 		::Dynamic respawn_dyn();
 

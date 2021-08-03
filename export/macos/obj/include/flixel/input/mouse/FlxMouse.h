@@ -103,7 +103,7 @@ class HXCPP_CLASS_ATTRIBUTES FlxMouse_obj : public  ::flixel::input::FlxPointer_
 		void reset();
 		::Dynamic reset_dyn();
 
-		void update();
+		virtual void update();
 		::Dynamic update_dyn();
 
 		void onFocus();

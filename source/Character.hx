@@ -38,6 +38,11 @@ class Character extends FlxSprite
 
 	private var pnum = 1;
 
+	// idk
+	var charlist:Array<String> = ["test", "stickman"];
+	var atkcooldown:Array<Float> = [1, 1];
+	var specialcooldown:Array<Float> = [3, 10];
+
 	public function new(playernum = 1, playable = true, name = "test", path = "assets/characters/test.png", w = 60, h = 140, ox = -10, oy = -50, fwidth = 32,
 			fheight = 32)
 	{
@@ -63,6 +68,17 @@ class Character extends FlxSprite
 				animation.add("hit", [8], 1);
 				animation.add("jump", [9], 1);
 				setGraphicSize(300);
+			case "stickman":
+				animation.add("idle", [0, 1], 1);
+				animation.add("moveleft", [2, 3], 3);
+				animation.add("moveright", [4, 5], 3);
+				animation.add("atkleft", [6], 1);
+				animation.add("atkright", [7], 1);
+				animation.add("spcleft", [8, 9, 10, 11], 1);
+				animation.add("spcright", [8, 9, 10, 11], 1);
+				animation.add("hit", [12], 1);
+				animation.add("jump", [13], 1);
+				setGraphicSize(300);
 		}
 		updateHitbox();
 		width = w;
@@ -76,6 +92,7 @@ class Character extends FlxSprite
 	public function respawn()
 	{
 		y = 0;
+		velocity.set(0, 0);
 		screenCenter(X);
 	}
 
@@ -143,9 +160,11 @@ class Character extends FlxSprite
 				{
 					if (FlxG.keys.justPressed.P || FlxG.keys.justPressed.Z)
 					{
+						trace("HIT TIME");
 						if (canhit)
 						{
-							hitboxInUse = true;
+							trace("HIT TIME");
+							// hitboxInUse = true;
 							hitting = true;
 							if (!facingleft)
 							{
@@ -165,7 +184,7 @@ class Character extends FlxSprite
 							}
 							// reset
 							canhit = false;
-							var timer = new FlxTimer().start(1, function(timer)
+							var timer = new FlxTimer().start(atkcooldown[charlist.indexOf(char)], function(timer)
 							{
 								canhit = true;
 							});
@@ -197,7 +216,7 @@ class Character extends FlxSprite
 
 							// reset
 							canspecial = false;
-							var timer = new FlxTimer().start(3, function(timer)
+							var timer = new FlxTimer().start(specialcooldown[charlist.indexOf(char)], function(timer)
 							{
 								hitboxInUse = false;
 								canspecial = true;

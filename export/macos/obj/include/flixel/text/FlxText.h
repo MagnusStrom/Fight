@@ -86,7 +86,7 @@ class HXCPP_CLASS_ATTRIBUTES FlxText_obj : public  ::flixel::FlxSprite_obj
 		 ::openfl::display::BitmapData _borderPixels;
 		 ::openfl::geom::ColorTransform _borderColorTransform;
 		bool _hasBorderAlpha;
-		void destroy();
+		virtual void destroy();
 
 		void drawFrame(::hx::Null< bool >  Force);
 
@@ -125,13 +125,13 @@ class HXCPP_CLASS_ATTRIBUTES FlxText_obj : public  ::flixel::FlxSprite_obj
 		bool get_autoSize();
 		::Dynamic get_autoSize_dyn();
 
-		::String set_text(::String Text);
+		virtual ::String set_text(::String Text);
 		::Dynamic set_text_dyn();
 
 		int get_size();
 		::Dynamic get_size_dyn();
 
-		int set_size(int Size);
+		virtual int set_size(int Size);
 		::Dynamic set_size_dyn();
 
 		int set_color(int Color);
@@ -201,9 +201,9 @@ class HXCPP_CLASS_ATTRIBUTES FlxText_obj : public  ::flixel::FlxSprite_obj
 		void drawTextFieldTo( ::openfl::display::BitmapData graphic);
 		::Dynamic drawTextFieldTo_dyn();
 
-		void draw();
+		virtual void draw();
 
-		void calcFrame(::hx::Null< bool >  RunOnCpp);
+		virtual void calcFrame(::hx::Null< bool >  RunOnCpp);
 
 		void applyBorderStyle();
 		::Dynamic applyBorderStyle_dyn();
