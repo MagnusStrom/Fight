@@ -58,6 +58,7 @@ class HXCPP_CLASS_ATTRIBUTES PlayState_obj : public  ::flixel::FlxState_obj
 		 ::Character p2;
 		 ::flixel::FlxSprite p1hitbox;
 		 ::flixel::FlxSprite p2hitbox;
+		 ::flixel::FlxSprite testCharLazer;
 		void create();
 
 		void update(Float elapsed);

@@ -44,17 +44,30 @@ class HXCPP_CLASS_ATTRIBUTES Character_obj : public  ::flixel::FlxSprite_obj
 		::hx::Val __SetField(const ::String &inString,const ::hx::Val &inValue, ::hx::PropertyAccess inCallProp);
 		void __GetFields(Array< ::String> &outFields);
 		static void __register();
+		void __Mark(HX_MARK_PARAMS);
+		void __Visit(HX_VISIT_PARAMS);
 		bool _hx_isInstanceOf(int inClassId);
 		::String __ToString() const { return HX_("Character",89,bb,a4,e3); }
 
 		bool touchingObject;
 		bool jumping;
 		bool facingleft;
+		bool meleeleft;
 		bool canplay;
 		bool hitting;
+		bool special;
+		bool usingspecial;
 		int offsetx;
 		int offsety;
 		bool canhit;
+		bool canspecial;
+		bool hitboxInUse;
+		Float hitboxX;
+		Float hitboxY;
+		int hitboxColor;
+		int hitboxVelocityX;
+		int hitboxVelocityY;
+		::String _hx_char;
 		void respawn();
 		::Dynamic respawn_dyn();
 

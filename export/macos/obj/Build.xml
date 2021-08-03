@@ -9652,8 +9652,11 @@
    <depend name="include/flixel/FlxObject.h"/>
    <depend name="include/flixel/FlxSprite.h"/>
    <depend name="include/flixel/FlxState.h"/>
+   <depend name="include/flixel/animation/FlxAnimationController.h"/>
    <depend name="include/flixel/group/FlxTypedGroup.h"/>
    <depend name="include/flixel/math/FlxPoint.h"/>
+   <depend name="include/flixel/math/FlxRandom.h"/>
+   <depend name="include/flixel/util/FlxAxes.h"/>
    <depend name="include/flixel/util/IFlxDestroyable.h"/>
    <depend name="include/flixel/util/IFlxPooled.h"/>
    <depend name="include/flixel/util/_FlxColor/FlxColor_Impl_.h"/>
