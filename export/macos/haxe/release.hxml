@@ -14,6 +14,8 @@
 -D flixel-addons=2.10.0
 -cp /usr/local/lib/haxe/lib/flixel-ui/2,3,3
 -D flixel-ui=2.3.3
+-cp /usr/local/lib/haxe/lib/websocket/2,0,2
+-D websocket=2.0.2
 -cp source
 -D lime-openal
 -D native

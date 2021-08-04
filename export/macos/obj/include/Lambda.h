@@ -52,9 +52,6 @@ class HXCPP_CLASS_ATTRIBUTES Lambda_obj : public ::hx::Object
 		static ::cpp::VirtualArray array( ::Dynamic it);
 		static ::Dynamic array_dyn();
 
-		static bool exists( ::Dynamic it, ::Dynamic f);
-		static ::Dynamic exists_dyn();
-
 };
 
 
