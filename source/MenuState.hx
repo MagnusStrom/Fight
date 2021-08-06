@@ -24,13 +24,18 @@ class MenuState extends FlxState
 	var character:FlxInputText;
 	var code:FlxInputText;
 	var join:FlxButton;
+	var startgame:FlxButton;
 	var clearlog:FlxButton;
 	var log:FlxText;
 
 	var stage:MapStage;
 	var p1:Character;
 	var p2:Character;
+
+	// this makes my life easier so fuck you
 	var ingame:Bool = false;
+	var p2ingame:Bool = false;
+	var startedgame:Bool = false;
 
 	function req(path, post)
 	{
@@ -91,23 +96,103 @@ class MenuState extends FlxState
 					logshit(data.message);
 				}
 
-				if (data.extra == "joinserver")
+				if (data.code == code.text)
 				{
-					logshit("Joining server!");
-					ingame = true;
-					remove(username);
-					remove(ip);
-					remove(port);
-					remove(character);
-					remove(code);
-					remove(join);
-					p1 = new Character(1, false, "test", "assets/characters/test.png", 60, 140, -29, -50, 32, 32);
-					add(p1);
-					p2 = new Character(2, false, "stickman", "assets/characters/stickman.png");
-					add(p2);
-					stage = new MapStage(500, 400, 1000, 400);
-					add(stage);
-					stage.screenCenter(X);
+					if (!ingame)
+					{ // meaning that the player is joining the game
+						//	logshit(Json.stringify(data));
+						var serverinfo = Json.parse(e.data);
+						logshit("Joining server!");
+						logshit("P1 Character: " + serverinfo.userdata[1].character);
+						ingame = true;
+						remove(username);
+						remove(ip);
+						remove(port);
+						remove(character);
+						remove(code);
+						remove(join);
+						p1 = new Character(1, false, serverinfo.userdata[1].character, "assets/characters/" + serverinfo.userdata[1].character + ".png", 60,
+							140, -29, -50, 32, 32);
+						add(p1);
+						p1.x -= 100;
+						if (serverinfo.userdata[2] != null)
+						{
+							p2ingame = true;
+							p2 = new Character(2, false, serverinfo.userdata[2].character, "assets/characters/" + serverinfo.userdata[2].character + ".png");
+							add(p2);
+						}
+						stage = new MapStage(500, 400, 1000, 400);
+						add(stage);
+						stage.screenCenter(X);
+
+						logshit("Waiting for other players. Will update every\nsecond to look for new players.");
+						var timer = new haxe.Timer(1000);
+						timer.run = function()
+						{
+							var getserverrequest = {
+								"type": "getserver",
+								"code": code.text
+							}
+							ws.send(Json.stringify(getserverrequest));
+							if (startedgame)
+							{
+								timer.run = function() {}
+							}
+						}
+					}
+					else
+					{ // the player is getting the game details
+						var serverinfo = Json.parse(e.data);
+						if (!p2ingame) // checking to see if p2 is in game
+						{
+							//	logshit("Player 2 is not in game.");
+							try
+							{
+								//	logshit(serverinfo.userdata[2].username);
+							}
+							catch (err)
+							{
+								//	logshit("cant find serverinfo.userdata[2]. logging to console");
+								//	trace(Json.stringify(serverinfo));
+							}
+							if (serverinfo.userdata[2] != null)
+							{
+								p2ingame = true;
+
+								logshit(serverinfo.userdata[2].username + " joined the lobby");
+								p2 = new Character(2, false, serverinfo.userdata[2].character,
+									"assets/characters/" + serverinfo.userdata[2].character + ".png");
+								add(p2);
+
+								startgame = new FlxButton(0, 0, "START GAME!", function()
+								{
+									var startgamerequest = {
+										"type": "startgame",
+										"code": code.text
+									}
+									ws.send(Json.stringify(startgamerequest));
+									FlxG.switchState(new PlayState(serverinfo.code, "1", ip.text, port.text));
+									startedgame = true;
+								});
+								startgame.screenCenter();
+								startgame.setGraphicSize(300);
+								startgame.y += 300;
+								add(startgame);
+							}
+						}
+						else
+						{ // waiting for game to start. only for p2 cuz p1 would have left already(if they didint i dont feel like coding a failsafe for that so)
+							if (serverinfo.status == "started")
+							{
+								// oh shit time to switch!
+								if (!startedgame)
+								{
+									FlxG.switchState(new PlayState(serverinfo.code, "2", ip.text, port.text));
+									startedgame = true;
+								}
+							}
+						}
+					}
 				}
 			};
 			ws.onclose = function()
@@ -178,6 +263,11 @@ class MenuState extends FlxState
 
 	override public function update(elapsed:Float):Void
 	{
+		if (ingame)
+		{
+			FlxG.collide(p1, stage);
+			FlxG.collide(p2, stage);
+		}
 		super.update(elapsed);
 	}
 }

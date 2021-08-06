@@ -52,7 +52,10 @@ class Character extends FlxSprite
 		char = name;
 		canplay = playable;
 		loadGraphic(path, true, fwidth, fheight);
-		drag.x = 350;
+		if (canplay)
+		{
+			drag.x = 350;
+		}
 		offsetx = ox;
 		offsety = oy;
 		switch (name)
@@ -80,11 +83,15 @@ class Character extends FlxSprite
 				animation.add("jump", [13], 1);
 				setGraphicSize(300);
 		}
+		animation.play('idle');
 		updateHitbox();
 		width = w;
 		height = h;
-		acceleration.y = 900;
-		maxVelocity.y = 500;
+		if (canplay)
+		{
+			acceleration.y = 900;
+			maxVelocity.y = 500;
+		}
 		screenCenter(X);
 		offset.set(ox, oy);
 	}
@@ -276,7 +283,7 @@ class Character extends FlxSprite
 			else
 			{
 				// punching bag, for waiting ig
-				animation.play('idle');
+				// animation.play('idle');
 			}
 		}
 		if (y > 900)
