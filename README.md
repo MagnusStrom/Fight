@@ -1,8 +1,4 @@
 # Fight
- A game I made because im bored.
-online only, usus p2p, wip
-WIP Readme
+One day, I wanted to make a fighting game cuz i wanted to create fighting characters. And I wanted to make it online.
 
-# Adding a character
-1: Download the repo
-2: 
+Uses https://github.com/MagnusStrom/FightServer for a server. Go there for hosting details.
