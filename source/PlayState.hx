@@ -40,6 +40,8 @@ class PlayState extends FlxState
 
 	var playersloaded:Bool = false;
 
+	var last:String;
+
 	// to make shit easier!!
 	function logshit(msg)
 	{
@@ -99,6 +101,9 @@ class PlayState extends FlxState
 		ws.onmessage = function(e)
 		{
 			var data = Json.parse(e.data);
+			var lastdata = Json.parse(last);
+			var lastnull = (lastdata == null ? true : false);
+
 			if (data.type == "message")
 			{
 				logshit(data.message);
@@ -128,8 +133,28 @@ class PlayState extends FlxState
 							p2.animation.play(data.userdata[2].animation);
 						}
 
-						p2.hitting = parseBool(data.userdata[2].hitting);
-						p2.special = parseBool(data.userdata[2].special);
+						if (!lastnull)
+						{
+							if (lastdata.userdata[2].hitting == true)
+							{
+								p2.hitting = false;
+							}
+							else
+							{
+								p2.hitting = parseBool(data.userdata[2].hitting);
+							}
+
+							if (lastdata.userdata[2].special == true)
+							{
+								p2.special = false;
+							}
+							else
+							{
+								p2.special = parseBool(data.userdata[2].special);
+							}
+						}
+						p2.facingleft = parseBool(data.userdata[2].facingleft);
+						p2.attackleft = parseBool(data.userdata[2].attackleft);
 					}
 					else if (player == "2")
 					{ // to be safe ig
@@ -141,14 +166,33 @@ class PlayState extends FlxState
 							p1.animation.play(data.userdata[1].animation);
 						}
 
-						trace("HITTING: " + data.userdata[1].hitting);
-						trace("SPECIAL: " + data.userdata[1].special);
+						if (!lastnull)
+						{
+							if (lastdata.userdata[1].hitting == true)
+							{
+								p1.hitting = false;
+							}
+							else
+							{
+								p1.hitting = parseBool(data.userdata[1].hitting);
+							}
 
-						p1.hitting = parseBool(data.userdata[1].hitting);
-						p1.special = parseBool(data.userdata[1].special);
+							if (lastdata.userdata[1].special == true)
+							{
+								p1.special = false;
+							}
+							else
+							{
+								p1.special = parseBool(data.userdata[1].special);
+							}
+						}
+
+						p1.facingleft = parseBool(data.userdata[1].facingleft);
+						p1.attackleft = parseBool(data.userdata[1].attackleft);
 					}
 				}
 			}
+			last = e.data;
 		};
 
 		ws.onclose = function()
@@ -171,7 +215,9 @@ class PlayState extends FlxState
 						"y": Std.string(p1.y),
 						"hitting": Std.string(p1.hitting),
 						"special": Std.string(p1.special),
-						"animation": p1.animation.curAnim.name
+						"animation": p1.animation.curAnim.name,
+						"facingleft": Std.string(p1.facingleft),
+						"attackleft": Std.string(p1.attackleft)
 					}
 					ws.send(Json.stringify(req));
 				}
@@ -186,7 +232,8 @@ class PlayState extends FlxState
 						"y": Std.string(p2.y),
 						"hitting": Std.string(p2.hitting),
 						"special": Std.string(p2.special),
-						"animation": p2.animation.curAnim.name
+						"animation": p2.animation.curAnim.name,
+						"attackleft": Std.string(p2.attackleft)
 					}
 					ws.send(Json.stringify(req));
 				}
@@ -194,15 +241,6 @@ class PlayState extends FlxState
 
 			if (playersloaded)
 			{
-				if (FlxG.collide(p1, stage))
-				{
-					p1.jumping = false;
-				}
-				if (FlxG.collide(p2, stage))
-				{
-					p2.jumping = false;
-				}
-
 				if (p1.special)
 				{
 					switch (p1.char)
@@ -257,7 +295,6 @@ class PlayState extends FlxState
 							});
 					}
 				}
-
 				if (p2.special)
 				{
 					switch (p2.char)
@@ -322,48 +359,48 @@ class PlayState extends FlxState
 						p1hitbox.velocity.y = p1.hitboxVelocityY;
 				}*/
 
-				FlxG.overlap(p1Objects, p2, function(hitbox:Hitbox, p2:Character)
+				if (player == "2")
 				{
-					// p2.velocity.x = (p1.facingleft ? FlxG.random.int(-250, -500) : FlxG.random.int(250, 500));
-					p2.velocity.x = FlxG.random.int(hitbox.knockbackx, hitbox.knockbackx) * (p1.attackleft ? -1 : 1);
-					p2.velocity.y = FlxG.random.int(-hitbox.knockbacky, -hitbox.knockbacky);
-					// trace(hitbox.knockbackx);
-					// trace(hitbox.knockbacky);
-					p1Objects.remove(hitbox);
-					if (!p2.stunned)
+					FlxG.overlap(p1Objects, p2, function(hitbox:Hitbox, p2:Character)
 					{
-						p2.stunned = true;
-						var timer = new FlxTimer().start(FlxG.random.float(0.1, 1), function(timer)
+						// p2.velocity.x = (p1.facingleft ? FlxG.random.int(-250, -500) : FlxG.random.int(250, 500));
+						p2.velocity.x = FlxG.random.int(hitbox.knockbackx, hitbox.knockbackx) * (p1.attackleft ? -1 : 1);
+						p2.velocity.y = FlxG.random.int(-hitbox.knockbacky, -hitbox.knockbacky);
+						// trace(hitbox.knockbackx);
+						// trace(hitbox.knockbacky);
+						p1Objects.remove(hitbox);
+						if (!p2.stunned)
 						{
-							p2.stunned = false;
-						});
-					}
-				});
-
-				FlxG.overlap(p2Objects, p1, function(hitbox:Hitbox, p1:Character)
+							p2.stunned = true;
+							var timer = new FlxTimer().start(FlxG.random.float(0.1, 1), function(timer)
+							{
+								p2.stunned = false;
+							});
+						}
+					});
+				}
+				if (player == "1")
 				{
-					// p2.velocity.x = (p1.facingleft ? FlxG.random.int(-250, -500) : FlxG.random.int(250, 500));
-					p1.velocity.x = FlxG.random.int(hitbox.knockbackx, hitbox.knockbackx) * (p2.attackleft ? -1 : 1);
-					p1.velocity.y = FlxG.random.int(-hitbox.knockbacky, -hitbox.knockbacky);
-					// trace(hitbox.knockbackx);
-					// trace(hitbox.knockbacky);
-					p2Objects.remove(hitbox);
-					if (!p1.stunned)
+					FlxG.overlap(p2Objects, p1, function(hitbox:Hitbox, p1:Character)
 					{
-						p1.stunned = true;
-						var timer = new FlxTimer().start(FlxG.random.float(0.1, 1), function(timer)
+						// p2.velocity.x = (p1.facingleft ? FlxG.random.int(-250, -500) : FlxG.random.int(250, 500));
+						p1.velocity.x = FlxG.random.int(hitbox.knockbackx, hitbox.knockbackx) * (p2.attackleft ? -1 : 1);
+						p1.velocity.y = FlxG.random.int(-hitbox.knockbacky, -hitbox.knockbacky);
+						// trace(hitbox.knockbackx);
+						// trace(hitbox.knockbacky);
+						p2Objects.remove(hitbox);
+						if (!p1.stunned)
 						{
-							p1.stunned = false;
-						});
-					}
-				});
+							p1.stunned = true;
+							var timer = new FlxTimer().start(FlxG.random.float(0.1, 1), function(timer)
+							{
+								p1.stunned = false;
+							});
+						}
+					});
+				}
 			}
 		};
-
-		p1Objects = new FlxTypedGroup<Hitbox>(0);
-		add(p1Objects);
-		p2Objects = new FlxTypedGroup<Hitbox>(0);
-		add(p2Objects);
 
 		var bg = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.fromRGB(157, 237, 232));
 		add(bg);
@@ -372,6 +409,8 @@ class PlayState extends FlxState
 		stage.screenCenter(X);
 		p1Objects = new FlxTypedGroup<Hitbox>(0);
 		add(p1Objects);
+		p2Objects = new FlxTypedGroup<Hitbox>(0);
+		add(p2Objects);
 		stats = new FlxText(0, 0, 0, "GAME STATS:\nCode: " + code + "\nPlayer: " + player, 24, true);
 		stats.screenCenter();
 		add(stats);
@@ -381,8 +420,16 @@ class PlayState extends FlxState
 
 	override public function update(elapsed:Float)
 	{
-		// game logic ig
-		// yanderedev moment
+		// All data is moved to a timer loop to compensate for lag. However, to prevent through the stage collisions are kept here
+
+		if (FlxG.collide(p1, stage))
+		{
+			p1.jumping = false;
+		}
+		if (FlxG.collide(p2, stage))
+		{
+			p2.jumping = false;
+		}
 
 		super.update(elapsed);
 	}
