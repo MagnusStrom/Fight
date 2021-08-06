@@ -4,6 +4,8 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.addons.ui.FlxInputText;
+import flixel.addons.ui.FlxUIDropDownMenu;
+import flixel.addons.ui.StrNameLabel;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
@@ -21,7 +23,7 @@ class MenuState extends FlxState
 	var username:FlxInputText;
 	var ip:FlxInputText;
 	var port:FlxInputText;
-	var character:FlxInputText;
+	var character:FlxUIDropDownMenu;
 	var code:FlxInputText;
 	var join:FlxButton;
 	var startgame:FlxButton;
@@ -37,6 +39,9 @@ class MenuState extends FlxState
 	var p2ingame:Bool = false;
 	var startedgame:Bool = false;
 
+	var charlist:Array<StrNameLabel>;
+	var actualcharlist:Array<String> = ["test", "stickman"];
+
 	function req(path, post)
 	{
 		//	var data = new haxe.Http('http://localhost:3000/' + path);
@@ -48,6 +53,12 @@ class MenuState extends FlxState
 	{
 		super.create();
 
+		charlist = new Array();
+		for (i in 0...actualcharlist.length)
+		{
+			var listShit = new StrNameLabel(actualcharlist[i], actualcharlist[i]);
+			charlist.push(listShit);
+		}
 		var bg = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.GRAY);
 		add(bg);
 		log = new FlxText(0, 0, 0, "Log here.", 24);
@@ -55,10 +66,12 @@ class MenuState extends FlxState
 		code = new FlxInputText(0, 0, 200, "enter code", 24, FlxColor.BLACK);
 		add(code);
 		code.screenCenter();
-		character = new FlxInputText(0, 0, 200, "character", 24, FlxColor.BLACK);
+		character = new FlxUIDropDownMenu(0, 0, charlist);
 		add(character);
 		character.screenCenter();
 		character.y -= 100;
+		//	character.width = 200;
+		//	character.height = 200;
 		ip = new FlxInputText(0, 0, 200, "localhost", 24, FlxColor.BLACK);
 		add(ip);
 		ip.screenCenter();
@@ -82,7 +95,7 @@ class MenuState extends FlxState
 				logshit("[Client] Connected to server, sending join request to code " + code.text);
 				var joinrequest = {
 					"type": "joinrequest",
-					"character": character.text,
+					"character": character.selectedLabel,
 					"username": username.text,
 					"code": code.text
 				}

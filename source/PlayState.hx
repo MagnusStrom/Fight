@@ -42,6 +42,11 @@ class PlayState extends FlxState
 
 	var last:String;
 
+	var firstreq:Bool = true;
+	var p1user:FlxText;
+	var p2user:FlxText;
+	var nametagsloaded:Bool = false;
+
 	// to make shit easier!!
 	function logshit(msg)
 	{
@@ -104,6 +109,15 @@ class PlayState extends FlxState
 			var lastdata = Json.parse(last);
 			var lastnull = (lastdata == null ? true : false);
 
+			if (firstreq)
+			{
+				firstreq = false;
+				p1user = new FlxText(0, 0, 0, data.userdata[1].username, 24);
+				add(p1user);
+				p2user = new FlxText(0, 0, 0, data.userdata[2].username, 24);
+				add(p2user);
+				nametagsloaded = true;
+			}
 			if (data.type == "message")
 			{
 				logshit(data.message);
@@ -241,6 +255,12 @@ class PlayState extends FlxState
 
 			if (playersloaded)
 			{
+				if (nametagsloaded)
+				{
+					p1user.setPosition(p1.x, p1.y - 200);
+					p2user.setPosition(p2.x, p2.y - 200);
+				}
+
 				if (p1.special)
 				{
 					switch (p1.char)
@@ -420,7 +440,8 @@ class PlayState extends FlxState
 
 	override public function update(elapsed:Float)
 	{
-		// All data is moved to a timer loop to compensate for lag. However, to prevent through the stage collisions are kept here
+		// All data is moved to a timer loop to compensate for lag.
+		// However, to prevent going through the stage collisions are kept here
 
 		if (FlxG.collide(p1, stage))
 		{
