@@ -261,6 +261,8 @@ class PlayState extends FlxState
 
 			if (playersloaded)
 			{
+				FlxG.watch.addQuick("p1vy", p1.velocity.y);
+				FlxG.watch.addQuick("p2vy", p2.velocity.y);
 				if (nametagsloaded)
 				{
 					p1user.setPosition(p1.x, p1.y - 50);
@@ -399,6 +401,7 @@ class PlayState extends FlxState
 						FlxG.log.add("COLLISION!");
 						// p2.velocity.x = (p1.facingleft ? FlxG.random.int(-250, -500) : FlxG.random.int(250, 500));
 						p2.velocity.x = FlxG.random.int(hitbox.knockbackx, hitbox.knockbackx) * (p1.attackleft ? -1 : 1);
+						p2.y -= 10;
 						p2.velocity.y = FlxG.random.int(-hitbox.knockbacky, -hitbox.knockbacky);
 						// FlxG.log.add(hitbox.knockbackx);
 						// FlxG.log.add(hitbox.knockbacky);
@@ -420,6 +423,7 @@ class PlayState extends FlxState
 						FlxG.log.add("COLLISION!");
 						// p2.velocity.x = (p1.facingleft ? FlxG.random.int(-250, -500) : FlxG.random.int(250, 500));
 						p1.velocity.x = FlxG.random.int(hitbox.knockbackx, hitbox.knockbackx) * (p2.attackleft ? -1 : 1);
+						p1.y -= 10;
 						p1.velocity.y = FlxG.random.int(-hitbox.knockbacky, -hitbox.knockbacky);
 						// FlxG.log.add(hitbox.knockbackx);
 						// FlxG.log.add(hitbox.knockbacky);
