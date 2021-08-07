@@ -41,7 +41,7 @@ class Character extends FlxSprite
 	private var pnum = 1;
 
 	// idk
-	var charlist:Array<String> = ["test", "stickman"];
+	var charlist:Array<String> = ["test", "stickman", "bobross"];
 	var atkcooldown:Array<Float> = [1, 1];
 	var specialcooldown:Array<Float> = [3, 10];
 
@@ -90,6 +90,21 @@ class Character extends FlxSprite
 				setGraphicSize(300);
 				width = 60;
 				height = 140;
+			case "bobross":
+				animation.add("idle", [0, 1], 1);
+				animation.add("moveleft", [2, 3], 3);
+				animation.add("moveright", [4, 5], 3);
+				animation.add("atkleft", [6], 1);
+				animation.add("atkright", [7], 1);
+				animation.add("spcleft", [8], 1);
+				animation.add("spcright", [9], 1);
+				animation.add("hit", [10], 1);
+				animation.add("jump", [11], 1);
+				offsetx = -30;
+				offsety = -50;
+				setGraphicSize(200);
+				width = 90;
+				height = 170;
 		}
 		animation.play('idle');
 		// updateHitbox();

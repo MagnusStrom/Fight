@@ -40,7 +40,7 @@ class MenuState extends FlxState
 	var startedgame:Bool = false;
 
 	var charlist:Array<StrNameLabel>;
-	var actualcharlist:Array<String> = ["test", "stickman"];
+	var actualcharlist:Array<String> = ["test", "stickman", "bobross"];
 
 	function req(path, post)
 	{
