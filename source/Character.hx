@@ -42,8 +42,8 @@ class Character extends FlxSprite
 
 	// idk
 	var charlist:Array<String> = ["test", "stickman", "bobross"];
-	var atkcooldown:Array<Float> = [1, 1];
-	var specialcooldown:Array<Float> = [3, 10];
+	var atkcooldown:Array<Float> = [1, 1, 1];
+	var specialcooldown:Array<Float> = [3, 10, 3];
 
 	public function new(playernum = 1, playable = true, name = "test", path = "assets/characters/test.png")
 	{
