@@ -170,6 +170,7 @@ class PlayState extends FlxState
 						}
 						p2.facingleft = parseBool(data.userdata[2].facingleft);
 						p2.attackleft = parseBool(data.userdata[2].attackleft);
+						p2.stunned = parseBool(data.userdata[2].stunned);
 					}
 					else if (player == "2")
 					{ // to be safe ig
@@ -204,6 +205,7 @@ class PlayState extends FlxState
 
 						p1.facingleft = parseBool(data.userdata[1].facingleft);
 						p1.attackleft = parseBool(data.userdata[1].attackleft);
+						p1.stunned = parseBool(data.userdata[1].stunned);
 					}
 				}
 			}
@@ -232,7 +234,8 @@ class PlayState extends FlxState
 						"special": Std.string(p1.special),
 						"animation": p1.animation.curAnim.name,
 						"facingleft": Std.string(p1.facingleft),
-						"attackleft": Std.string(p1.attackleft)
+						"attackleft": Std.string(p1.attackleft),
+						"stunned": Std.string(p1.stunned)
 					}
 					ws.send(Json.stringify(req));
 				}
@@ -248,7 +251,9 @@ class PlayState extends FlxState
 						"hitting": Std.string(p2.hitting),
 						"special": Std.string(p2.special),
 						"animation": p2.animation.curAnim.name,
-						"attackleft": Std.string(p2.attackleft)
+						"facingleft": Std.string(p2.facingleft),
+						"attackleft": Std.string(p2.attackleft),
+						"stunned": Std.string(p2.stunned)
 					}
 					ws.send(Json.stringify(req));
 				}
