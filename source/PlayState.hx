@@ -50,7 +50,7 @@ class PlayState extends FlxState
 	// to make shit easier!!
 	function logshit(msg)
 	{
-		trace(msg);
+		FlxG.log.add(msg);
 	}
 
 	override public function new(gamecode, playernum, ipdata, portdata)
@@ -112,9 +112,11 @@ class PlayState extends FlxState
 			if (firstreq)
 			{
 				firstreq = false;
-				p1user = new FlxText(0, 0, 0, data.userdata[1].username, 24);
+				p1user = new FlxText(0, 0, 0, "Player 1", 24);
 				add(p1user);
-				p2user = new FlxText(0, 0, 0, data.userdata[2].username, 24);
+				p1user.color = FlxColor.RED;
+				p2user = new FlxText(0, 0, 0, "Player 2", 24);
+				p2user.color = FlxColor.BLUE;
 				add(p2user);
 				nametagsloaded = true;
 			}
@@ -128,8 +130,7 @@ class PlayState extends FlxState
 			{ // if the data sent is game related
 				if (!playersloaded)
 				{
-					p1 = new Character(1, player1, data.userdata[1].character, "assets/characters/" + data.userdata[1].character + ".png", 60, 140, -29, -50,
-						32, 32);
+					p1 = new Character(1, player1, data.userdata[1].character, "assets/characters/" + data.userdata[1].character + ".png");
 					add(p1);
 					p2 = new Character(2, !player1, data.userdata[2].character, "assets/characters/" + data.userdata[2].character + ".png");
 					add(p2);
@@ -141,7 +142,7 @@ class PlayState extends FlxState
 					{
 						p2.x = Std.parseFloat(data.userdata[2].x);
 						p2.y = Std.parseFloat(data.userdata[2].y);
-						//	trace(data.userdata[2].animation);
+						//	FlxG.log.add(data.userdata[2].animation);
 						if (data.userdata[2].animation != null)
 						{
 							p2.animation.play(data.userdata[2].animation);
@@ -174,7 +175,7 @@ class PlayState extends FlxState
 					{ // to be safe ig
 						p1.x = Std.parseFloat(data.userdata[1].x);
 						p1.y = Std.parseFloat(data.userdata[1].y);
-						// trace(data.userdata[1].animation);
+						// FlxG.log.add(data.userdata[1].animation);
 						if (data.userdata[1].animation != null)
 						{
 							p1.animation.play(data.userdata[1].animation);
@@ -237,7 +238,7 @@ class PlayState extends FlxState
 				}
 				else if (player == "2")
 				{ // to be safe ig
-					// trace("UPLOADING P2X: " + p2.x);
+					// FlxG.log.add("UPLOADING P2X: " + p2.x);
 					var req = {
 						"type": "updateplayer",
 						"code": code,
@@ -257,8 +258,8 @@ class PlayState extends FlxState
 			{
 				if (nametagsloaded)
 				{
-					p1user.setPosition(p1.x, p1.y - 200);
-					p2user.setPosition(p2.x, p2.y - 200);
+					p1user.setPosition(p1.x, p1.y - 50);
+					p2user.setPosition(p2.x, p2.y - 50);
 				}
 
 				if (p1.special)
@@ -270,7 +271,7 @@ class PlayState extends FlxState
 								1000); // testCharLazer.x = (p1.facingleft ? (p1.x + 100) : (p1.x - 70));
 							testCharLazer.velocity.x = (p1.attackleft ? -1000 : 1000);
 							p1Objects.add(testCharLazer);
-						// trace("ADDED");
+						// FlxG.log.add("ADDED");
 						case "stickman":
 							var explosion:Hitbox = new Hitbox(p1.x + 26, p1.y + 70, 10, 10, FlxColor.BLUE, 2500,
 								2500); // testCharLazer.x = (p1.facingleft ? (p1.x + 100) : (p1.x - 70));
@@ -283,7 +284,7 @@ class PlayState extends FlxState
 									explosion.updateHitbox();
 									explosion.x = ((p1.width / 2) + p1.x) - (explosion.width / 2);
 									explosion.y = ((p1.height / 2) + p1.y) - (explosion.height / 2);
-									// trace("X: " + explosion.x);
+									// FlxG.log.add("X: " + explosion.x);
 								},
 								onComplete: function(tween)
 								{
@@ -324,7 +325,7 @@ class PlayState extends FlxState
 								1000); // testCharLazer.x = (p2.facingleft ? (p2.x + 100) : (p2.x - 70));
 							testCharLazer.velocity.x = (p2.attackleft ? -1000 : 1000);
 							p2Objects.add(testCharLazer);
-						// trace("ADDED");
+						// FlxG.log.add("ADDED");
 						case "stickman":
 							var explosion:Hitbox = new Hitbox(p2.x + 26, p2.y + 70, 10, 10, FlxColor.BLUE, 2500,
 								2500); // testCharLazer.x = (p2.facingleft ? (p2.x + 100) : (p2.x - 70));
@@ -337,7 +338,7 @@ class PlayState extends FlxState
 									explosion.updateHitbox();
 									explosion.x = ((p2.width / 2) + p2.x) - (explosion.width / 2);
 									explosion.y = ((p2.height / 2) + p2.y) - (explosion.height / 2);
-									// trace("X: " + explosion.x);
+									// FlxG.log.add("X: " + explosion.x);
 								},
 								onComplete: function(tween)
 								{
@@ -350,6 +351,10 @@ class PlayState extends FlxState
 
 				if (p2.hitting)
 				{
+					if (player == "2")
+					{
+						p2.usingnormal = true;
+					}
 					switch (p2.char)
 					{
 						case "test":
@@ -358,6 +363,7 @@ class PlayState extends FlxState
 							var timer = new FlxTimer().start(0.1, function(timer)
 							{
 								p2Objects.remove(p2hitbox);
+								p2.usingnormal = false;
 							});
 						case "stickman":
 							var p2bullet:Hitbox = new Hitbox(p2.x + (50 * (p2.attackleft ? -1 : 1.3)), p2.y + 50, 10, 10, FlxColor.RED, 700, 500);
@@ -366,7 +372,9 @@ class PlayState extends FlxState
 							var timer = new FlxTimer().start(5, function(timer)
 							{
 								p2Objects.remove(p2bullet);
+								p2.usingnormal = false;
 							});
+							FlxG.log.add("p2 shot bullet!");
 					}
 				}
 
@@ -383,11 +391,12 @@ class PlayState extends FlxState
 				{
 					FlxG.overlap(p1Objects, p2, function(hitbox:Hitbox, p2:Character)
 					{
+						FlxG.log.add("COLLISION!");
 						// p2.velocity.x = (p1.facingleft ? FlxG.random.int(-250, -500) : FlxG.random.int(250, 500));
 						p2.velocity.x = FlxG.random.int(hitbox.knockbackx, hitbox.knockbackx) * (p1.attackleft ? -1 : 1);
 						p2.velocity.y = FlxG.random.int(-hitbox.knockbacky, -hitbox.knockbacky);
-						// trace(hitbox.knockbackx);
-						// trace(hitbox.knockbacky);
+						// FlxG.log.add(hitbox.knockbackx);
+						// FlxG.log.add(hitbox.knockbacky);
 						p1Objects.remove(hitbox);
 						if (!p2.stunned)
 						{
@@ -403,11 +412,12 @@ class PlayState extends FlxState
 				{
 					FlxG.overlap(p2Objects, p1, function(hitbox:Hitbox, p1:Character)
 					{
+						FlxG.log.add("COLLISION!");
 						// p2.velocity.x = (p1.facingleft ? FlxG.random.int(-250, -500) : FlxG.random.int(250, 500));
 						p1.velocity.x = FlxG.random.int(hitbox.knockbackx, hitbox.knockbackx) * (p2.attackleft ? -1 : 1);
 						p1.velocity.y = FlxG.random.int(-hitbox.knockbacky, -hitbox.knockbacky);
-						// trace(hitbox.knockbackx);
-						// trace(hitbox.knockbacky);
+						// FlxG.log.add(hitbox.knockbackx);
+						// FlxG.log.add(hitbox.knockbacky);
 						p2Objects.remove(hitbox);
 						if (!p1.stunned)
 						{

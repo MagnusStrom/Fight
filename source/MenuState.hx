@@ -124,8 +124,7 @@ class MenuState extends FlxState
 						remove(character);
 						remove(code);
 						remove(join);
-						p1 = new Character(1, false, serverinfo.userdata[1].character, "assets/characters/" + serverinfo.userdata[1].character + ".png", 60,
-							140, -29, -50, 32, 32);
+						p1 = new Character(1, false, serverinfo.userdata[1].character, "assets/characters/" + serverinfo.userdata[1].character + ".png");
 						add(p1);
 						p1.x -= 100;
 						if (serverinfo.userdata[2] != null)
@@ -166,7 +165,7 @@ class MenuState extends FlxState
 							catch (err)
 							{
 								//	logshit("cant find serverinfo.userdata[2]. logging to console");
-								//	trace(Json.stringify(serverinfo));
+								//	FlxG.log.add(Json.stringify(serverinfo));
 							}
 							if (serverinfo.userdata[2] != null)
 							{
@@ -260,7 +259,7 @@ class MenuState extends FlxState
 					remove(code);
 					remove(join);
 				}
-				trace(data.extra);
+				FlxG.log.add(data.extra);
 			};
 			ws.onclose = function()
 			{

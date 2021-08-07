@@ -18,6 +18,8 @@ class Character extends FlxSprite
 	public var hitting = false;
 	// fuck my life
 	public var special = false;
+
+	public var usingnormal = false;
 	public var usingspecial = false;
 
 	var offsetx = 0;
@@ -43,21 +45,19 @@ class Character extends FlxSprite
 	var atkcooldown:Array<Float> = [1, 1];
 	var specialcooldown:Array<Float> = [3, 10];
 
-	public function new(playernum = 1, playable = true, name = "test", path = "assets/characters/test.png", w = 60, h = 140, ox = -10, oy = -50, fwidth = 32,
-			fheight = 32)
+	public function new(playernum = 1, playable = true, name = "test", path = "assets/characters/test.png")
 	{
 		super();
 
 		pnum = playernum;
 		char = name;
 		canplay = playable;
-		loadGraphic(path, true, fwidth, fheight);
+		loadGraphic(path, true, 32, 32);
 		if (canplay)
 		{
 			drag.x = 350;
 		}
-		offsetx = ox;
-		offsety = oy;
+
 		switch (name)
 		{
 			case "test":
@@ -70,7 +70,11 @@ class Character extends FlxSprite
 				animation.add("spcright", [6], 1);
 				animation.add("hit", [8], 1);
 				animation.add("jump", [9], 1);
+				offsetx = -9;
+				offsety = -50;
 				setGraphicSize(300);
+				width = 60;
+				height = 140;
 			case "stickman":
 				animation.add("idle", [0, 1], 1);
 				animation.add("moveleft", [2, 3], 3);
@@ -81,19 +85,21 @@ class Character extends FlxSprite
 				animation.add("spcright", [8, 9, 10, 11], 1);
 				animation.add("hit", [12], 1);
 				animation.add("jump", [13], 1);
+				offsetx = -30;
+				offsety = -50;
 				setGraphicSize(300);
+				width = 60;
+				height = 140;
 		}
 		animation.play('idle');
-		updateHitbox();
-		width = w;
-		height = h;
+		// updateHitbox();
 		if (canplay)
 		{
 			acceleration.y = 900;
 			maxVelocity.y = 500;
 		}
 		screenCenter(X);
-		offset.set(ox, oy);
+		offset.set(offsetx, offsety);
 	}
 
 	public function respawn()
@@ -167,10 +173,10 @@ class Character extends FlxSprite
 				{
 					if (FlxG.keys.justPressed.P || FlxG.keys.justPressed.Z)
 					{
-						trace("HIT TIME");
+						FlxG.log.add("HIT TIME");
 						if (canhit)
 						{
-							trace("HIT TIME");
+							FlxG.log.add("HIT TIME");
 							// hitboxInUse = true;
 							hitting = true;
 							if (!facingleft)
@@ -227,7 +233,6 @@ class Character extends FlxSprite
 							{
 								hitboxInUse = false;
 								canspecial = true;
-								usingspecial = false;
 							});
 						}
 					}
